@@ -108,22 +108,17 @@ def _unpickle(filename):
 
     return data
 
-def ZCAtrans(raw, Uzca = None ):
+def ZCAtrans(raw):
     xm = np.mean(raw, axis = 0)
-    raw -= xm
-    raw2 = raw.reshape((Xraw.shape[0], -1))
-
-    if Uzca == None:
-        # raw is assumed to be zero-mean
-        C = np.dot( raw2.T, raw2 )/raw2.shape[0]
-        U, eva, V = np.linalg.svd(C)  # U[:, i] is the i-th eigenvector
-        sqeva = np.sqrt(eva + 0.001)
-        Uzca = np.dot(U/sqeva[np.newaxis, :], U.T)
-        X = np.dot(raw2, Uzca).reshape(raw.shape)
-        return X, Uzca
-    else:
-        X = np.dot(raw2, Uzca).reshape(raw.shape )
-        return X
+    raw= raw- xm
+    raw2 = raw.reshape((raw.shape[0], -1))
+    # raw is assumed to be zero-mean
+    C = np.dot( raw2.T, raw2 )/raw2.shape[0]
+    U, eva, V = np.linalg.svd(C)  # U[:, i] is the i-th eigenvector
+    sqeva = np.sqrt(eva + 0.001)
+    Uzca = np.dot(U/sqeva[np.newaxis, :], U.T)
+    X = np.dot(raw2, Uzca)
+    return X
 
 def _convert_images(raw):
     """
@@ -134,12 +129,18 @@ def _convert_images(raw):
 
     # Convert the raw images from the data-files to floating-points.
     raw_float = np.array(raw, dtype=float) / 255.0
+    raw_float = ZCAtrans(raw_float)
 
     # Reshape the array to 4-dimensions.
     images = raw_float.reshape([-1, num_channels, img_size, img_size])
 
     # Reorder the indices of the array.
     images = images.transpose([0, 2, 3, 1])
+    
+    # normailze each image
+    for i in range(images.shape[0]):
+        m,M = images[i].min(), images[i].max()
+        images[i]=(images[i] - m) / (M - m)
 
     return images
 
