@@ -46,8 +46,6 @@ def plot_images(images, cls_true, cls_pred=None, smooth=True):
     plt.show()
 
 
-
-
 ########################################################################
 # The functions are for showing different layer for the networks
 ########################################################################
@@ -65,3 +63,38 @@ def plotNNFilter(units):
         plt.subplot(n_rows, n_columns, i+1)
         plt.title('Filter ' + str(i))
         plt.imshow(units[0,:,:,i], interpolation="nearest", cmap="gray")
+
+#######################################################
+# The function is for obtaining hard assignment for the images and show the confusion matrix
+#######################################################
+def Test_Anlaysis(sess, images, labels, cls_true):
+    
+    num_images = len(images)
+    # Initialize the predictions
+    cls_pred = np.zeros(shape=num_images, dtype=np.int)
+    
+    i = 0
+    while i < num_images:
+        # The ending index for the next batch is denoted j.
+        j = min(i + batch_size, num_images)
+        # Calculate the predicted class using TensorFlow.
+        cls_pred[i:j] = sess.run(prediction, feed_dict={x: images[i:j, :],y_true: labels[i:j, :]})
+
+        # end-index of the current batch.
+        i = j
+    
+    co_ma = confusion_matrix(y_true=cls_true, y_pred=cls_pred) 
+    
+    # Print the confusion matrix as text.
+    print("Confusion Matrix as numbers:")  
+    for i in range(num_classes):
+        # Append the class-name to each line.
+        class_name = "({}) {}".format(i, class_names[i])
+        print(co_ma[i, :], class_name)
+    
+    # Print the consusion matrix as graph
+    print("Plot Confusion Matrix:")  
+    df_cm = pd.DataFrame(co_ma, index = [i for i in class_names],
+                  columns = [i for i in class_names])
+    plt.figure(figsize = (10,7))
+    sn.heatmap(df_cm, annot=True)
