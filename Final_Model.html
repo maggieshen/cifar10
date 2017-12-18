@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Final Model</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Final_Model</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -12159,7 +12159,7 @@ div#notebook {
 
 
 <span class="c1">#######################################################</span>
-<span class="c1"># The function is for compute the cross entropy</span>
+<span class="c1"># The function is for compute the accuracy</span>
 <span class="c1">#######################################################</span>
 <span class="k">def</span> <span class="nf">compute_accuracy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;pred_class&#39;</span><span class="p">)</span>
@@ -12186,7 +12186,7 @@ div#notebook {
     <span class="k">return</span> <span class="n">x_batch</span><span class="p">,</span> <span class="n">y_batch</span>
 
 <span class="c1">######################################################</span>
-<span class="c1"># The Function for defineing the CNN Network</span>
+<span class="c1"># The Function for defining the CNN Network</span>
 <span class="c1">######################################################</span>
 <span class="c1"># Inference</span>
 
@@ -13567,7 +13567,7 @@ Loading data: data/CIFAR-10/cifar-10-batches-py/test_batch
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Check the data shape </span>
 <span class="n">images_train</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">images_test</span><span class="o">.</span><span class="n">shape</span>
-<span class="n">labels_train</span><span class="o">.</span><span class="n">shape</span>   <span class="c1">##label_train and test_train is the one-hot coded label </span>
+<span class="n">labels_train</span><span class="o">.</span><span class="n">shape</span>   <span class="c1">##label_train and label_test is the one-hot coded label </span>
 <span class="n">labels_test</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
